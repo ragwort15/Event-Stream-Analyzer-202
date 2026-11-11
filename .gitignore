@@ -1,0 +1,20 @@
+target/
+out/
+results/
+*.class
+
+# Generated reports
+sensors.json
+devices.json
+access.json
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
