@@ -38,6 +38,9 @@ The application is built around design patterns so it is easy to extend. You can
 network logs), a new input format (e.g. JSON Lines) or a new output format (e.g. CSV) by adding new classes,
 without changing the existing ones.
 
+## Project structure
+
+```text
 event-stream-analyzer/
 ├── pom.xml                         # Maven build (Java 17, Gson, JUnit 5, shade plugin)
 ├── README.md                       # Build, run, and design notes
@@ -83,6 +86,11 @@ event-stream-analyzer/
         ├── process/                # HandlerChainTest
         ├── stats/                  # StatsUtilTest, one test class per aggregator
         └── output/                 # JsonOutputWriterTest
+```
+
+
+    
+   
 ## Tech stack
 
 - Java 17
