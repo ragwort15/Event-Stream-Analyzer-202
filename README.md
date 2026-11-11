@@ -38,6 +38,51 @@ The application is built around design patterns so it is easy to extend. You can
 network logs), a new input format (e.g. JSON Lines) or a new output format (e.g. CSV) by adding new classes,
 without changing the existing ones.
 
+event-stream-analyzer/
+├── pom.xml                         # Maven build (Java 17, Gson, JUnit 5, shade plugin)
+├── README.md                       # Build, run, and design notes
+├── .gitignore                      # Ignores target/
+├── docs/
+│   └── design.pdf                  # Part I: problem, patterns, consequences, UML, extensibility
+├── samples/
+│   └── events.txt                  # Sample input from the assignment
+└── src/
+    ├── main/java/com/eventstream/
+    │   ├── Main.java               # Entry point: CLI errors and exit codes
+    │   ├── engine/
+    │   │   ├── EventStreamAnalyzer.java   # Runs the pipeline: parse → classify → aggregate → write
+    │   │   └── CliArgs.java               # Parses and validates --file and --outdir
+    │   ├── parse/                  # Strategy: input formats
+    │   │   ├── InputParser.java
+    │   │   └── KeyValueParser.java
+    │   ├── model/                  # Typed records
+    │   │   ├── Record.java                # Sealed interface
+    │   │   ├── SensorReading.java
+    │   │   ├── DeviceEvent.java
+    │   │   ├── AccessRecord.java
+    │   │   ├── Severity.java
+    │   │   └── AccessResult.java
+    │   ├── process/                # Chain of Responsibility + Template Method: classification
+    │   │   ├── RecordHandler.java
+    │   │   ├── SensorReadingHandler.java
+    │   │   ├── DeviceEventHandler.java
+    │   │   ├── AccessRecordHandler.java
+    │   │   └── UnrecognizedLineHandler.java
+    │   ├── stats/                  # Strategy: per-type aggregation
+    │   │   ├── Aggregator.java
+    │   │   ├── SensorAggregator.java
+    │   │   ├── DeviceEventAggregator.java
+    │   │   ├── AccessRecordAggregator.java
+    │   │   └── StatsUtil.java             # median, mean, std dev, nearest-rank percentile, rounding
+    │   └── output/                 # Strategy: output formats
+    │       ├── OutputWriter.java
+    │       └── JsonOutputWriter.java
+    └── test/java/com/eventstream/
+        ├── engine/                 # EventStreamAnalyzerTest, CliArgsTest
+        ├── parse/                  # KeyValueParserTest
+        ├── process/                # HandlerChainTest
+        ├── stats/                  # StatsUtilTest, one test class per aggregator
+        └── output/                 # JsonOutputWriterTest
 ## Tech stack
 
 - Java 17
